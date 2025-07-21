@@ -1,87 +1,49 @@
-# Welcome to React Router!
+# AI Resume Analyzer
 
-A modern, production-ready template for building full-stack React applications using React Router.
+This project is a web application that allows users to upload their resumes and get feedback on them.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Components
 
-## Features
+### Navbar
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+The `Navbar` component is a simple navigation bar that displays the application title and a link to upload a resume.
 
-## Getting Started
+**Usage:**
 
-### Installation
+```tsx
+import Navbar from "./app/components/Navbar";
 
-Install the dependencies:
-
-```bash
-npm install
+<Navbar />;
 ```
 
-### Development
+### ResumeCard
 
-Start the development server with HMR:
+The `ResumeCard` component displays a preview of a resume, including the company name, job title, and an overall score. Clicking on the card will take the user to a more detailed view of the resume feedback.
 
-```bash
-npm run dev
+**Usage:**
+
+```tsx
+import ResumeCard from "./app/components/ResumeCard";
+
+const resume = {
+  id: "1",
+  companyName: "Google",
+  jobTitle: "Software Engineer",
+  feedback: {
+    overallScore: 85,
+  },
+  imagePath: "/images/resume-1.png",
+};
+
+<ResumeCard resume={resume} />;
 ```
 
-Your application will be available at `http://localhost:5173`.
+**Props:**
 
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+*   `resume`: An object containing the following properties:
+    *   `id`: The unique identifier of the resume.
+    *   `companyName`: The name of the company the resume is for.
+    *   `jobTitle`: The job title the resume is for.
+    *   `feedback`: An object containing the feedback for the resume.
+        *   `overallScore`: The overall score of the resume.
+    *   `imagePath`: The path to the image of the resume.
