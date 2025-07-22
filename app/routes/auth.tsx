@@ -1,16 +1,13 @@
+import { usePuterStore } from "~/lib/puter";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { usePuterStore } from "~/lib/puter";
 
 export const meta = () => [
-  { title: "ResuMind | Auth" },
-  {
-    name: "description",
-    content: "Log Into Your Account",
-  },
+  { title: "Resumind | Auth" },
+  { name: "description", content: "Log into your account" },
 ];
 
-const auth = () => {
+const Auth = () => {
   const { isLoading, auth } = usePuterStore();
   const location = useLocation();
   const next = location.search.split("next=")[1];
@@ -26,12 +23,12 @@ const auth = () => {
         <section className="flex flex-col gap-8 bg-white rounded-2xl p-10">
           <div className="flex flex-col items-center gap-2 text-center">
             <h1>Welcome</h1>
-            <h2>Log In To Continue Your Job Journey</h2>
+            <h2>Log In to Continue Your Job Journey</h2>
           </div>
           <div>
             {isLoading ? (
               <button className="auth-button animate-pulse">
-                <p>Signing You In...</p>
+                <p>Signing you in...</p>
               </button>
             ) : (
               <>
@@ -53,4 +50,4 @@ const auth = () => {
   );
 };
 
-export default auth;
+export default Auth;

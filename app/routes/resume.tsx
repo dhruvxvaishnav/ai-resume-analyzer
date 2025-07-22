@@ -26,27 +26,110 @@ const Resume = () => {
   useEffect(() => {
     const loadResume = async () => {
       const resume = await kv.get(`resume:${id}`);
-
       if (!resume) return;
-
       const data = JSON.parse(resume);
-
       const resumeBlob = await fs.read(data.resumePath);
       if (!resumeBlob) return;
-
       const pdfBlob = new Blob([resumeBlob], { type: "application/pdf" });
       const resumeUrl = URL.createObjectURL(pdfBlob);
       setResumeUrl(resumeUrl);
-
       const imageBlob = await fs.read(data.imagePath);
       if (!imageBlob) return;
       const imageUrl = URL.createObjectURL(imageBlob);
       setImageUrl(imageUrl);
 
-      setFeedback(data.feedback);
-      console.log({ resumeUrl, imageUrl, feedback: data.feedback });
-    };
+      // Transform the actual data to match your Feedback interface
+      const transformedFeedback: Feedback = {
+        overallScore: data.feedback.overall_rating || 0,
+        ATS: {
+          score: data.feedback.ats_compatibility || 0,
+          tips:
+            data.feedback.ats_optimization_tips?.map((tip: string) => ({
+              type: "improve" as const,
+              tip: tip,
+            })) || [],
+        },
+        toneAndStyle: {
+          score: data.feedback.section_ratings?.summary || 0,
+          tips: [
+            // Add strengths as good tips
+            ...(data.feedback.strengths?.map((strength: string) => ({
+              type: "good" as const,
+              tip: strength,
+              explanation: "This is a strength identified in your resume",
+            })) || []),
+            // Add some weaknesses related to tone
+            ...(data.feedback.weaknesses
+              ?.slice(0, 2)
+              .map((weakness: string) => ({
+                type: "improve" as const,
+                tip: weakness,
+                explanation:
+                  "Consider improving this aspect for better tone and style",
+              })) || []),
+          ],
+        },
+        content: {
+          score: data.feedback.section_ratings?.experience || 0,
+          tips:
+            data.feedback.improvement_suggestions?.map((tip: string) => ({
+              type: "improve" as const,
+              tip: tip,
+              explanation: "This improvement will enhance your resume content",
+            })) || [],
+        },
+        structure: {
+          score: data.feedback.section_ratings?.format_and_design || 0,
+          tips: [
+            // Add format-related strengths
+            {
+              type: "good" as const,
+              tip: "Clean, professional layout with good organization",
+              explanation: "Your resume has a well-structured format",
+            },
+            // Add some structure-related weaknesses
+            ...(data.feedback.weaknesses
+              ?.filter(
+                (w: string) =>
+                  w.toLowerCase().includes("section") ||
+                  w.toLowerCase().includes("format") ||
+                  w.toLowerCase().includes("organization")
+              )
+              .map((weakness: string) => ({
+                type: "improve" as const,
+                tip: weakness,
+                explanation:
+                  "Improving this will enhance your resume structure",
+              })) || []),
+          ],
+        },
+        skills: {
+          score: data.feedback.section_ratings?.skills || 0,
+          tips: [
+            // Add present keywords as good tips
+            ...(data.feedback.keyword_analysis?.present_keywords
+              ?.slice(0, 3)
+              .map((keyword: string) => ({
+                type: "good" as const,
+                tip: `"${keyword}" keyword is present`,
+                explanation: "This relevant keyword strengthens your resume",
+              })) || []),
+            // Add missing keywords as improvement tips
+            ...(data.feedback.keyword_analysis?.missing_keywords
+              ?.slice(0, 5)
+              .map((keyword: string) => ({
+                type: "improve" as const,
+                tip: `Consider adding "${keyword}" keyword`,
+                explanation:
+                  "This keyword is commonly sought by employers in your field",
+              })) || []),
+          ],
+        },
+      };
 
+      setFeedback(transformedFeedback);
+      console.log({ resumeUrl, imageUrl, feedback: transformedFeedback });
+    };
     loadResume();
   }, [id]);
 
@@ -61,7 +144,7 @@ const Resume = () => {
         </Link>
       </nav>
       <div className="flex flex-row w-full max-lg:flex-col-reverse">
-        <section className="feedback-section bg-[url('/images/bg-small.svg') bg-cover h-[100vh] sticky top-0 items-center justify-center">
+        <section className="feedback-section bg-[url('/images/bg-small.svg')] bg-cover h-[100vh] sticky top-0 items-center justify-center">
           {imageUrl && resumeUrl && (
             <div className="animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] max-wxl:h-fit w-fit">
               <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
@@ -79,10 +162,7 @@ const Resume = () => {
           {feedback ? (
             <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
               <Summary feedback={feedback} />
-              <ATS
-                score={feedback.ATS.score || 0}
-                suggestions={feedback.ATS.tips || []}
-              />
+              <ATS score={feedback.ATS.score} suggestions={feedback.ATS.tips} />
               <Details feedback={feedback} />
             </div>
           ) : (
@@ -93,4 +173,5 @@ const Resume = () => {
     </main>
   );
 };
+
 export default Resume;
