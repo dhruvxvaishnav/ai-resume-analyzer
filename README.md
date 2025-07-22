@@ -1,7 +1,5 @@
 # AI Resume Analyzer
 
-![AI Resume Analyzer](public/images/resume-1.png)
-
 A modern web application that provides AI-powered feedback on resumes, helping job seekers optimize their resumes for Applicant Tracking Systems (ATS) and improve their chances of landing interviews.
 
 ## 🚀 Features
