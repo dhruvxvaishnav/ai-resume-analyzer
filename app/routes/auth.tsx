@@ -6,7 +6,7 @@ export const meta = () => [
   { title: "ResuMind | Auth" },
   {
     name: "description",
-    content: "Log Into Yur Account",
+    content: "Log Into Your Account",
   },
 ];
 
