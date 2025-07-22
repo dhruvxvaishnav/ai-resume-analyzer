@@ -1,166 +1,110 @@
-import type { ReactNode } from "react";
 import React, { createContext, useContext, useState } from "react";
 import { cn } from "~/lib/utils";
 
+// Accordion Context
 interface AccordionContextType {
-  activeItems: string[];
-  toggleItem: (id: string) => void;
-  isItemActive: (id: string) => boolean;
+  openItem: string | null;
+  setOpenItem: (itemId: string | null) => void;
 }
 
-const AccordionContext = createContext<AccordionContextType | undefined>(
-  undefined
-);
+const AccordionContext = createContext<AccordionContextType | null>(null);
 
-const useAccordion = () => {
-  const context = useContext(AccordionContext);
-  if (!context) {
-    throw new Error("Accordion components must be used within an Accordion");
-  }
-  return context;
-};
-
-interface AccordionProps {
-  children: ReactNode;
-  defaultOpen?: string;
-  allowMultiple?: boolean;
-  className?: string;
-}
-
-export const Accordion: React.FC<AccordionProps> = ({
-  children,
-  defaultOpen,
-  allowMultiple = false,
-  className = "",
-}) => {
-  const [activeItems, setActiveItems] = useState<string[]>(
-    defaultOpen ? [defaultOpen] : []
-  );
-
-  const toggleItem = (id: string) => {
-    setActiveItems((prev) => {
-      if (allowMultiple) {
-        return prev.includes(id)
-          ? prev.filter((item) => item !== id)
-          : [...prev, id];
-      } else {
-        return prev.includes(id) ? [] : [id];
-      }
-    });
-  };
-
-  const isItemActive = (id: string) => activeItems.includes(id);
+// Main Accordion Component
+export const Accordion = ({ children }: { children: React.ReactNode }) => {
+  const [openItem, setOpenItem] = useState<string | null>(null);
 
   return (
-    <AccordionContext.Provider
-      value={{ activeItems, toggleItem, isItemActive }}
-    >
-      <div className={`space-y-2 ${className}`}>{children}</div>
+    <AccordionContext.Provider value={{ openItem, setOpenItem }}>
+      <div className="space-y-2">{children}</div>
     </AccordionContext.Provider>
   );
 };
 
-interface AccordionItemProps {
-  id: string;
-  children: ReactNode;
-  className?: string;
-}
-
-export const AccordionItem: React.FC<AccordionItemProps> = ({
+// Accordion Item
+export const AccordionItem = ({
   id,
   children,
-  className = "",
+}: {
+  id: string;
+  children: React.ReactNode;
 }) => {
   return (
-    <div className={`overflow-hidden border-b border-gray-200 ${className}`}>
+    <div className="border border-gray-200 rounded-lg bg-white shadow-sm">
       {children}
     </div>
   );
 };
 
-interface AccordionHeaderProps {
-  itemId: string;
-  children: ReactNode;
-  className?: string;
-  icon?: ReactNode;
-  iconPosition?: "left" | "right";
-}
-
-export const AccordionHeader: React.FC<AccordionHeaderProps> = ({
+// Accordion Header
+export const AccordionHeader = ({
   itemId,
   children,
-  className = "",
-  icon,
-  iconPosition = "right",
+}: {
+  itemId: string;
+  children: React.ReactNode;
 }) => {
-  const { toggleItem, isItemActive } = useAccordion();
-  const isActive = isItemActive(itemId);
+  const context = useContext(AccordionContext);
+  if (!context)
+    throw new Error("AccordionHeader must be used within Accordion");
 
-  const defaultIcon = (
-    <svg
-      className={cn("w-5 h-5 transition-transform duration-200", {
-        "rotate-180": isActive,
-      })}
-      fill="none"
-      stroke="#98A2B3"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M19 9l-7 7-7-7"
-      />
-    </svg>
-  );
+  const { openItem, setOpenItem } = context;
+  const isOpen = openItem === itemId;
 
-  const handleClick = () => {
-    toggleItem(itemId);
+  const toggleOpen = () => {
+    setOpenItem(isOpen ? null : itemId);
   };
 
   return (
     <button
-      onClick={handleClick}
-      className={`
-        w-full px-4 py-3 text-left
-        focus:outline-none
-        transition-colors duration-200 flex items-center justify-between cursor-pointer
-        ${className}
-      `}
+      className="w-full p-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+      onClick={toggleOpen}
     >
-      <div className="flex items-center space-x-3">
-        {iconPosition === "left" && (icon || defaultIcon)}
-        <div className="flex-1">{children}</div>
+      <div className="flex justify-between items-center">
+        {children}
+        <svg
+          className={cn(
+            "w-5 h-5 transition-transform duration-200",
+            isOpen ? "transform rotate-180" : ""
+          )}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
       </div>
-      {iconPosition === "right" && (icon || defaultIcon)}
     </button>
   );
 };
 
-interface AccordionContentProps {
-  itemId: string;
-  children: ReactNode;
-  className?: string;
-}
-
-export const AccordionContent: React.FC<AccordionContentProps> = ({
+// Accordion Content
+export const AccordionContent = ({
   itemId,
   children,
-  className = "",
+}: {
+  itemId: string;
+  children: React.ReactNode;
 }) => {
-  const { isItemActive } = useAccordion();
-  const isActive = isItemActive(itemId);
+  const context = useContext(AccordionContext);
+  if (!context)
+    throw new Error("AccordionContent must be used within Accordion");
+
+  const { openItem } = context;
+  const isOpen = openItem === itemId;
 
   return (
     <div
-      className={`
-        overflow-hidden transition-all duration-300 ease-in-out
-        ${isActive ? "max-h-fit opacity-100" : "max-h-0 opacity-0"}
-        ${className}
-      `}
+      className={cn(
+        "transition-all duration-200 ease-in-out overflow-hidden",
+        isOpen ? "max-h-screen pb-4" : "max-h-0"
+      )}
     >
-      <div className="px-4 py-3 ">{children}</div>
+      <div className="px-4">{children}</div>
     </div>
   );
 };

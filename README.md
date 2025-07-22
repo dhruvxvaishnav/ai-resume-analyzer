@@ -1,132 +1,260 @@
 # AI Resume Analyzer
 
-This project is a web application that allows users to upload their resumes and get AI-powered feedback on them. It analyzes various aspects of the resume, such as tone, style, content, structure, and skills, providing a detailed report to help users improve their resumes for job applications.
+![AI Resume Analyzer](public/images/resume-1.png)
 
-## Screenshots
+A modern web application that provides AI-powered feedback on resumes, helping job seekers optimize their resumes for Applicant Tracking Systems (ATS) and improve their chances of landing interviews.
 
-![Home Page](/public/images/resume-1.png)
-_The home page displaying a list of analyzed resumes._
+## 🚀 Features
 
-![Feedback View](/public/images/resume-2.png)
-_Detailed feedback view for a resume._
+### Core Functionality
 
-## Features
+- **AI-Powered Resume Analysis** - Get detailed feedback on resume content, structure, tone, and skills
+- **ATS Compatibility Scoring** - Analyze how well your resume performs with Applicant Tracking Systems
+- **PDF Processing** - Upload PDF resumes and automatically convert them to images for display
+- **Multi-Category Feedback** - Receive targeted suggestions for:
+  - Tone & Style
+  - Content Quality
+  - Document Structure
+  - Skills Assessment
 
--   **AI-Powered Feedback:** Get detailed feedback on your resume'''s tone, content, structure, and skills.
--   **ATS Score:** See how well your resume is likely to perform with Applicant Tracking Systems (ATS).
--   **PDF Upload & Conversion:** Upload your resume in PDF format, and it will be automatically converted to an image for display.
--   **Secure Authentication:** User authentication is handled by Puter.js.
--   **Data Persistence:** Your resume data is stored securely in your Puter account.
+### User Experience
 
-## Project Structure
+- **Secure Authentication** - User login/logout via Puter.js
+- **Resume Management** - View history of analyzed resumes
+- **Real-time Processing** - Live status updates during resume analysis
+- **Responsive Design** - Works seamlessly on desktop and mobile devices
+- **Interactive Feedback** - Expandable sections with detailed suggestions
 
-The project is structured as follows:
+## 🛠️ Tech Stack
 
-```
-/
-├── app/
-│   ├── components/  # Reusable React components
-│   ├── lib/         # Utility functions and libraries
-│   ├── routes/      # Application routes
-│   ├── app.css      # Global styles
-│   └── root.tsx     # Root application component
-├── constants/       # Shared constants
-├── public/          # Static assets (images, icons)
-├── types/           # TypeScript type definitions
-├── package.json     # Project dependencies and scripts
-├── vite.config.ts   # Vite configuration
-└── tsconfig.json    # TypeScript configuration
-```
+### Frontend
 
-## Technologies Used
+- **React 19** - Modern React with latest features
+- **TypeScript** - Type-safe development
+- **React Router 7** - Client-side routing
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Vite** - Fast build tool and dev server
 
--   **Frontend:**
-    -   [React](https://reactjs.org/)
-    -   [React Router](https://reactrouter.com/)
-    -   [Vite](https://vitejs.dev/)
-    -   [TypeScript](https://www.typescriptlang.org/)
-    -   [Tailwind CSS](https://tailwindcss.com/)
--   **Backend & State Management:**
-    -   [Puter.js](https://puter.com/): Handles authentication, file storage, database (KV), and AI functionalities.
-    -   [Zustand](https://github.com/pmndrs/zustand): For client-side state management.
--   **PDF Processing:**
-    -   [PDF.js](https://mozilla.github.io/pdf.js/): For rendering PDF documents in the browser.
+### Backend & Services
 
-## Getting Started
+- **Puter.js** - Cloud platform providing:
+  - Authentication
+  - File storage
+  - Key-value database
+  - AI analysis capabilities
+- **Zustand** - Lightweight state management
+- **PDF.js** - PDF processing and rendering
+
+### Development Tools
+
+- **TypeScript** - Static type checking
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+
+## 📦 Installation
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) (v18 or newer recommended)
--   [pnpm](https://pnpm.io/) (or your preferred package manager)
+- Node.js 18+
+- pnpm (recommended) or npm
 
-### Installation
+### Setup
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd ai-resume-analyzer
-    ```
+1. **Clone the repository**
 
-2.  **Install dependencies:**
-    ```bash
-    pnpm install
-    ```
+   ```bash
+   git clone https://github.com/your-username/ai-resume-analyzer.git
+   cd ai-resume-analyzer
+   ```
 
-### Running the Application
+2. **Install dependencies**
 
-To start the development server, run:
+   ```bash
+   pnpm install
+   ```
 
-```bash
-pnpm dev
+3. **Start development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open in browser**
+   ```
+   http://localhost:3000
+   ```
+
+## 🎯 Usage
+
+### Getting Started
+
+1. **Sign In** - Authenticate using Puter.js
+2. **Upload Resume** - Choose a PDF file (max 20MB)
+3. **Add Job Details** - Enter company name, job title, and description
+4. **Get Analysis** - Wait for AI processing (30-60 seconds)
+5. **Review Feedback** - Explore detailed suggestions and scores
+
+### Understanding Your Scores
+
+- **90-100** - Excellent (Strong)
+- **70-89** - Good (Good Start)
+- **Below 70** - Needs Improvement (Needs Work)
+
+### Feedback Categories
+
+- **ATS Score** - Compatibility with tracking systems
+- **Tone & Style** - Professional language and consistency
+- **Content** - Achievement descriptions and impact
+- **Structure** - Organization and formatting
+- **Skills** - Relevant technical and soft skills
+
+## 📁 Project Structure
+
+```
+/
+├── app/                    # Main application code
+│   ├── components/         # Reusable React components
+│   │   ├── Accordion.tsx   # Collapsible content sections
+│   │   ├── ATS.tsx         # ATS score display
+│   │   ├── Details.tsx     # Detailed feedback sections
+│   │   ├── FileUploader.tsx# Drag-and-drop upload
+│   │   ├── Navbar.tsx      # Navigation bar
+│   │   ├── ResumeCard.tsx  # Resume preview cards
+│   │   ├── ScoreGauge.tsx  # Visual score displays
+│   │   └── Summary.tsx     # Score overview
+│   ├── lib/                # Utility functions
+│   │   ├── puter.ts        # Puter.js integration
+│   │   ├── pdf2img.ts      # PDF to image conversion
+│   │   └── utils.ts        # General utilities
+│   ├── routes/             # Page components
+│   │   ├── home.tsx        # Dashboard/resume list
+│   │   ├── upload.tsx      # Resume upload form
+│   │   ├── resume.tsx      # Feedback display
+│   │   ├── auth.tsx        # Authentication
+│   │   └── wipe.tsx        # Data cleanup utility
+│   ├── app.css             # Global styles
+│   └── root.tsx            # App root component
+├── constants/              # Configuration
+│   └── index.ts            # AI prompts and data
+├── types/                  # TypeScript definitions
+│   └── index.d.ts          # Interface definitions
+├── public/                 # Static assets
+│   ├── images/             # UI images and examples
+│   └── icons/              # SVG icons
+├── package.json            # Dependencies and scripts
+├── tailwind.config.js      # Tailwind configuration
+├── tsconfig.json           # TypeScript configuration
+└── vite.config.ts          # Vite build configuration
 ```
 
-The application will be available at `http://localhost:3000`.
+## 🧩 Key Components
 
-## Scripts
+### Data Flow
 
--   `pnpm dev`: Starts the development server.
--   `pnpm build`: Builds the application for production.
--   `pnpm start`: Starts the production server.
--   `pnpm typecheck`: Runs the TypeScript compiler to check for type errors.
+1. **Upload** → PDF file uploaded to Puter.js storage
+2. **Convert** → PDF converted to image for preview
+3. **Analyze** → AI processes resume content with job context
+4. **Store** → Results saved to key-value database
+5. **Display** → Formatted feedback shown to user
 
-## Components
+### Component Architecture
 
-The application is built with a set of reusable components found in `app/components/`:
+- **Accordion** - Expandable sections for organized feedback
+- **ScoreGauge** - Visual representation of scores
+- **FileUploader** - Drag-and-drop with progress indicators
+- **ATS** - Specialized ATS score display
+- **Details** - Categorized feedback with tips
 
--   **`Accordion.tsx`**: A collapsible accordion component for displaying content in sections.
--   **`Navbar.tsx`**: The main navigation bar.
--   **`ResumeCard.tsx`**: A card to display a summary of a resume on the home page.
--   **`ScoreCircle.tsx`**: A component to display a score in a circular progress bar.
--   **`ScoreGuage.tsx`**: A gauge-like component to visualize a score.
--   **`feedback/`**: Components related to displaying AI feedback:
-    -   **`ATS.tsx`**: Shows the Applicant Tracking System (ATS) score and related tips.
-    -   **`Details.tsx`**: Provides a detailed breakdown of feedback categories (Tone, Content, etc.).
-    -   **`Summary.tsx`**: Displays an overall score summary.
+## 🔄 Available Scripts
 
-## Routes
+```bash
+# Development
+pnpm dev          # Start dev server with hot reload
+pnpm build        # Build for production
+pnpm preview      # Preview production build
 
-The application'''s routes are defined in `app/routes/`:
+# Quality Assurance
+pnpm typecheck    # Run TypeScript compiler
+pnpm lint         # Run ESLint
+pnpm format       # Format code with Prettier
 
--   **`home.tsx` (`/`)**: The main page that displays the user'''s submitted resumes.
--   **`auth.tsx` (`/auth`)**: Handles user sign-in and sign-out using Puter.js.
--   **`resume.$id.tsx` (`/resume/:id`)**: Displays the detailed feedback for a specific resume. (Note: This route is not yet implemented in the provided file structure, but is a likely future route).
--   **`upload.tsx` (`/upload`)**: A page for uploading new resumes. (Note: This route is not yet implemented in the provided file structure).
--   **`wipe.tsx` (`/wipe`)**: A utility route to clear all application data from the user'''s Puter account (files and KV store).
+# Deployment
+pnpm start        # Start production server
+```
 
-## State Management
+## 🔐 Environment Setup
 
-The application uses **Zustand** for simple, client-side state management. For all backend interactions, it uses a custom Zustand store (`app/lib/puter.ts`) that acts as a wrapper around the **Puter.js SDK**. This `usePuterStore` provides a clean and reactive way to interact with Puter'''s services for authentication, file system operations, AI, and key-value storage.
+No environment variables required - Puter.js handles all backend configuration automatically.
 
-## Contributing
+## 🤝 Contributing
 
-Contributions are welcome! If you have suggestions for improvements, please open an issue or submit a pull request.
+We welcome contributions! Here's how to get started:
 
-1.  Fork the repository.
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m '''Add some AmazingFeature'''`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
+### Development Process
 
-## License
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Add tests if applicable
+5. Run type checking: `pnpm typecheck`
+6. Commit changes: `git commit -m 'Add amazing feature'`
+7. Push to branch: `git push origin feature/amazing-feature`
+8. Open a Pull Request
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+### Coding Standards
+
+- Use TypeScript for all new code
+- Follow existing component patterns
+- Add JSDoc comments for complex functions
+- Keep components focused and reusable
+- Use Tailwind for styling (no custom CSS)
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Resume not uploading?**
+
+- Check file size (max 20MB)
+- Ensure file is PDF format
+- Verify internet connection
+
+**Scores showing as 0?**
+
+- Check browser console for errors
+- Ensure PDF contains readable text
+- Try re-uploading the resume
+
+**Authentication failing?**
+
+- Clear browser cache
+- Try incognito/private mode
+- Check Puter.js service status
+
+## 📈 Performance
+
+- **Bundle Size** - Optimized with Vite tree-shaking
+- **Load Time** - Lazy loading for route components
+- **File Processing** - Client-side PDF conversion reduces server load
+- **Caching** - Resume data cached locally until refresh
+
+## 🔮 Future Enhancements
+
+- **Multiple File Formats** - Support for Word documents
+- **Resume Templates** - Built-in resume builder
+- **Skill Recommendations** - Industry-specific skill suggestions
+- **Comparison Tool** - Before/after resume analysis
+- **Export Options** - PDF reports of feedback
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Puter.js** - For providing the cloud infrastructure and AI capabilities
+- **PDF.js** - Mozilla's excellent PDF processing library
+- **Tailwind CSS** - For the utility-first CSS framework
+- **React Team** - For the amazing React ecosystem
+
+---
